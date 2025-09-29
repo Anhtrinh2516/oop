@@ -1,5 +1,5 @@
 import java.util.HashSet;
-import java.util.Set;
+
 
 // CS108 HW1 -- String static methods
 
@@ -12,7 +12,26 @@ public class StringCode {
 	 * @return max run length
 	 */
 	public static int maxRun(String str) {
-		return 0; // YOUR CODE HERE
+		int n = str.length();
+		if(n == 0 ) return 0;
+		int [] dp = new int[n];
+		dp[0] = 1;
+
+		for(int i=1; i<n; i++){
+			if(str.charAt(i) == str.charAt(i-1)) {
+				dp[i] = dp[i-1] + 1;
+			}else{
+				dp[i] = 1;
+			}
+		}
+
+		int max = dp[0];
+		for (int i = 1; i < dp.length; i++) {
+			if (dp[i] > max) {
+				max = dp[i];
+			}
+		}
+		return max;
 	}
 
 	
@@ -24,7 +43,22 @@ public class StringCode {
 	 * @return blown up string
 	 */
 	public static String blowup(String str) {
-		return null; // YOUR CODE HERE
+		int n = str.length();
+		StringBuilder s = new StringBuilder();
+		for(int i=0; i<n - 1; i++){
+			if (Character.isDigit(str.charAt(i))) {
+				int x = str.charAt(i) - '0';
+				while (x-- > 0) {
+					s.append(str.charAt(i + 1));
+				}
+			} else {
+				s.append(str.charAt(i));
+			}
+		}
+		if(!Character.isDigit(str.charAt(n - 1))) {
+			s.append(str.charAt(n-1));
+		}
+		return s.toString();
 	}
 	
 	/**
@@ -34,6 +68,21 @@ public class StringCode {
 	 * Compute this in linear time using a HashSet. Len will be 1 or more.
 	 */
 	public static boolean stringIntersect(String a, String b, int len) {
-		return false; // YOUR CODE HERE
+		if(a == null || b == null || len <= 0) return false;
+		if(len > a.length() || len > b.length()) return false;
+
+		HashSet<String> set = new HashSet<>();
+
+		for(int i=0; i <= a.length() - len; i++){
+			set.add(a.substring(i, i + len));
+		}
+
+		for(int i=0; i < b.length(); i++){
+			if (set.contains(b.substring(i, i+len))) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
